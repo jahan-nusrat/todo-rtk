@@ -24,7 +24,9 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": "off"
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "no-empty-function": "off",
+        "@typescript-eslint/no-empty-function": ["off"]
     },
     "overrides": [
         {
