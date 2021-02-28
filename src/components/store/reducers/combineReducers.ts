@@ -9,4 +9,5 @@ const reducers = combineReducers({
   counter: counterReducer
 })
 
-export default createStore(reducers)
+const store = createStore(reducers);
+export default store;
