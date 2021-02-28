@@ -11,7 +11,7 @@ export const SELECTED_TODO = 'SELECTED_TODO';
 /* Actions & Actions types */
 
 //Create todo
-interface CreateTodoActionType {
+export interface CreateTodoActionType {
   type: typeof CREATE_TODO;
   payload: ToDo
 }
@@ -30,7 +30,7 @@ export const createTodoActionCreator = ({ description }: {
 }
 
 //Edit todo
-interface EditTodoActionType {
+export interface EditTodoActionType {
   type: typeof EDIT_TODO;
   payload : {
     id: string,
@@ -48,7 +48,7 @@ export const editTodoActionCreator = ({ id, description } : {
 }
 
 //Toggle todo
-interface ToggleTodoActionType {
+export interface ToggleTodoActionType {
   type: typeof TOGGLE_TODO;
   payload: {
     id: string;
@@ -66,7 +66,7 @@ export const toggleTodoActionCreator = ({ id, isCompleted } : {
 }
 
 //Delete todo
-interface DeleteTodoActionType {
+export interface DeleteTodoActionType {
   type: typeof DELETE_TODO;
   payload: { id: string }
 }
@@ -81,7 +81,7 @@ export const deleteTodoActionCreator = ({id} : {
 }
 
 //Selected todo
-interface SelectTodoActionType {
+export interface SelectTodoActionType {
   type: typeof SELECTED_TODO;
   payload: { id: string }
 }
