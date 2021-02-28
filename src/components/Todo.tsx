@@ -1,43 +1,36 @@
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
-import { ToDo } from '../type';
-import { v1 as uuid} from 'uuid';
+import { State } from '../type';
 import './App.css'
-
-const todos: ToDo[] = [
-  {
-    id: uuid(),
-    description: 'Learning TypeScript',
-    isCompleted: false,
-  },
-  {
-    id: uuid(),
-    description: 'Learning Redux Toolkit',
-    isCompleted: false,
-  },
-  {
-    id: uuid(),
-    description: 'Learning Styled-Components',
-    isCompleted: true,
-  },
-]
-
+import { useDispatch, useSelector } from "react-redux";
+import { 
+  createTodoActionCreator, 
+  editTodoActionCreator, 
+  toggleTodoActionCreator, 
+  deleteTodoActionCreator, 
+  selectTodoActionCreator
+} from './store/actions/actionTypes'
 interface ActiveTodo {
   id: string
 }
 
 const Todo = () => {
-  const [activeTodo, setActiveTodo] = useState<ActiveTodo>({
-    id: ''
-  })
+  const dispatch = useDispatch();
+  const todos = useSelector((state: State) => state.todos);
+  const selectedTodoId = useSelector((state: State) => state.selectedTodo);
+  const editCount = useSelector((state: State) => state.counter)
+
   const [newTodoInput, setNewTodoInput] = useState<string>("")
   const [editTodoInput, setEditTodoInput] = useState<string>("")
   const editInputRef = useRef<HTMLInputElement>(null)
   const [isEditMode, setIsEditMode] = useState<boolean>(false)
 
-  const selectedTodo = todos.find(todo => todo.id === activeTodo.id)
+  const selectedTodo = selectedTodoId && todos.find(todo => todo.id === selectedTodoId) || null;
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) : void => {
-    e.preventDefault()
+    e.preventDefault();
+    if(!newTodoInput.length) return;
+    dispatch(createTodoActionCreator({description: newTodoInput}));
+    setNewTodoInput("")
   }
 
   const handleNewTodoInputChange = (e: ChangeEvent<HTMLInputElement>) : void => {
@@ -46,7 +39,7 @@ const Todo = () => {
   }
 
   const handleSelectTodo = (id: string ) : void => {
-    setActiveTodo({ id: id })
+    dispatch(selectTodoActionCreator({id}))
   }
 
   const handleEditInputChange = (e: ChangeEvent<HTMLInputElement>) : void => {
@@ -77,7 +70,7 @@ const Todo = () => {
 
   return (
     <div className="App">
-      <div className="App__counter">Todos Updated Count: 0</div>
+      <div className="App__counter">Todos Updated Count: {editCount}</div>
       <div className="App__header">
         <h1>Basic Todo App</h1>
         <form onSubmit={handleSubmit}>
@@ -97,7 +90,7 @@ const Todo = () => {
             todos.map((todo, index) => (
               <li 
               key={todo.id} 
-              className={`${todo.isCompleted ? 'done' : ''} ${todo.id === activeTodo.id ? 'active' : ''}`} 
+              className={`${todo.isCompleted ? 'done' : ''} ${todo.id === selectedTodoId ? 'active' : ''}`} 
               onClick={() => handleSelectTodo(todo.id)}
               >
                 <span className="list-number"> {index + 1}</span> {todo.description}
