@@ -1,8 +1,12 @@
-import { ToDo } from '../../type';
+import { ToDo } from '../../../type';
 import { v1 as uuid} from 'uuid'
-import { CreateTodoActionType, EditTodoActionType, ToggleTodoActionType, DeleteTodoActionType, SelectTodoActionType, CREATE_TODO, EDIT_TODO, TOGGLE_TODO, DELETE_TODO } from './actionTypes';
+import { CreateTodoActionType, EditTodoActionType, ToggleTodoActionType, DeleteTodoActionType, CREATE_TODO, EDIT_TODO, TOGGLE_TODO, DELETE_TODO } from '../actions/actionTypes';
 
-type TodoActionTypes = CreateTodoActionType | EditTodoActionType | ToggleTodoActionType | DeleteTodoActionType | SelectTodoActionType;
+export type TodoActionTypes = 
+CreateTodoActionType | 
+EditTodoActionType | 
+ToggleTodoActionType | 
+DeleteTodoActionType;
 
 const todosInitialState: ToDo[] = [
   {

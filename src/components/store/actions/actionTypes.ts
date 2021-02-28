@@ -1,5 +1,5 @@
 import { v1 as uuid } from 'uuid'
-import { ToDo } from "../../type";
+import { ToDo } from "../../../type";
 
 //Constants
 export const CREATE_TODO = 'CREATE_TODO';
