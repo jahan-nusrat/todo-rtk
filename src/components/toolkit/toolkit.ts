@@ -2,7 +2,6 @@ import { createSlice, PayloadAction, combineReducers, configureStore, getDefault
 import { ToDo } from '../../type'
 import { v1 as uuid} from 'uuid'
 import logger from 'redux-logger';
-import { createTodoActionCreator, editTodoActionCreator, toggleTodoActionCreator, deleteTodoActionCreator, selectTodoActionCreator} from '../store/actions/actionTypes';
 
 const todosInitialState: ToDo[] = [
   {
@@ -51,7 +50,7 @@ const todosSlice = createSlice({
         state[index].isCompleted = payload.isCompleted;
       }
     },
-    delete: (state, { payload }: PayloadAction<{id: string}>) => {
+    remove: (state, { payload }: PayloadAction<{id: string}>) => {
       const index = state.findIndex(todo => todo.id === payload.id);
       if(index !== -1) {
         state.splice(index, 1);
@@ -76,20 +75,12 @@ const counterTodoSlice = createSlice({
     [todosSlice.actions.create.type] : state => state + 1,
     [todosSlice.actions.edit.type] : state => state + 1,
     [todosSlice.actions.toggle.type] : state => state + 1,
-    [todosSlice.actions.delete.type] : state => state + 1
+    [todosSlice.actions.remove.type] : state => state + 1
   },
 })
 
-export const {
-  create: actions.,
-  edit: editTodoActionCreator,
-  toggle: toggleTodoActionCreator,
-  delete: deleteTodoActionCreator
-} = todosSlice.actions
-
-export const {
-  selected: selectTodoActionCreator
-} = selectedTodoSlice.actions
+export const { create, edit, toggle, remove } = todosSlice.actions;
+export const { selected } = selectedTodoSlice.actions;
 
 const reducer = combineReducers({
   todos: todosSlice.reducer,

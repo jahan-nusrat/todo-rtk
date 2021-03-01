@@ -2,20 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from "reac
 import { State } from '../type';
 import './App.css'
 import { useDispatch, useSelector } from "react-redux";
-import { 
-  createTodoActionCreator,
-  editTodoActionCreator, 
-  toggleTodoActionCreator, 
-  deleteTodoActionCreator, 
-  selectTodoActionCreator
-} from './toolkit/toolkit';
-// import { 
-//   createTodoActionCreator, 
-//   editTodoActionCreator, 
-//   toggleTodoActionCreator, 
-//   deleteTodoActionCreator, 
-//   selectTodoActionCreator
-// } from './store/actions/actionTypes'
+import {  create, edit, toggle, remove, selected } from './toolkit/toolkit';
 
 const Todo = () => {
   const dispatch = useDispatch();
@@ -33,7 +20,7 @@ const Todo = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) : void => {
     e.preventDefault();
     if(!newTodoInput.length) return;
-    dispatch(createTodoActionCreator({description: newTodoInput}));
+    dispatch(create({description: newTodoInput}));
     setNewTodoInput("")
   }
 
@@ -43,7 +30,7 @@ const Todo = () => {
   }
 
   const handleSelectTodo = (id: string ) : void => {
-    dispatch(selectTodoActionCreator({id}))
+    dispatch(selected({id}))
   }
 
   const handleEditInputChange = (e: ChangeEvent<HTMLInputElement>) : void => {
@@ -62,14 +49,14 @@ const Todo = () => {
       handleCancelUpdate()
       return;
     }
-    dispatch(editTodoActionCreator({ id: selectedTodoId, description: editTodoInput }));
+    dispatch(edit({ id: selectedTodoId, description: editTodoInput }));
     setIsEditMode(false);
     setEditTodoInput('')
   }
 
   const handleToggle = (): void => {
     if(!selectedTodoId || !selectedTodo) return;
-    dispatch(toggleTodoActionCreator({ id: selectedTodoId, isCompleted: !selectedTodo.isCompleted}))
+    dispatch(toggle({ id: selectedTodoId, isCompleted: !selectedTodo.isCompleted}))
   }
 
   useEffect(() => {
@@ -86,7 +73,7 @@ const Todo = () => {
 
   const handleDelete = () : void => {
     if(!selectedTodoId) return;
-    dispatch(deleteTodoActionCreator({ id: selectedTodoId }))
+    dispatch(remove({ id: selectedTodoId }))
   }
 
   return (
