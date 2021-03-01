@@ -9,9 +9,6 @@ import {
   deleteTodoActionCreator, 
   selectTodoActionCreator
 } from './store/actions/actionTypes'
-interface ActiveTodo {
-  id: string
-}
 
 const Todo = () => {
   const dispatch = useDispatch();
@@ -54,6 +51,18 @@ const Todo = () => {
 
   const handleUpdate = (e: FormEvent<HTMLFormElement>):void => {
     e.preventDefault()
+    if(!editTodoInput.length || !selectedTodoId) {
+      handleCancelUpdate()
+      return;
+    }
+    dispatch(editTodoActionCreator({ id: selectedTodoId, description: editTodoInput }));
+    setIsEditMode(false);
+    setEditTodoInput('')
+  }
+
+  const handleToggle = (): void => {
+    if(!selectedTodoId || !selectedTodo) return;
+    dispatch(toggleTodoActionCreator({ id: selectedTodoId, isCompleted: !selectedTodo.isCompleted}))
   }
 
   useEffect(() => {
@@ -62,10 +71,15 @@ const Todo = () => {
     }
   }, [isEditMode])
 
-  const handleCancelUpdate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  const handleCancelUpdate = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e?.preventDefault();
     setIsEditMode(false);
     setEditTodoInput("")
+  }
+
+  const handleDelete = () : void => {
+    if(!selectedTodoId) return;
+    dispatch(deleteTodoActionCreator({ id: selectedTodoId }))
   }
 
   return (
@@ -113,8 +127,8 @@ const Todo = () => {
               </span>
               <div className="todo-actions">
                 <button onClick={handleEdit}>Edit</button>
-                <button>Toggle</button>
-                <button>Delete</button>
+                <button onClick={handleToggle}>Toggle</button>
+                <button onClick={handleDelete}>Delete</button>
               </div>
             </>
           ) : (
@@ -125,7 +139,7 @@ const Todo = () => {
                 onChange={handleEditInputChange}
                 value={editTodoInput}
               />
-              <button type="submit">Update</button>
+              <button type="submit" onClick={() =>handleUpdate}>Update</button>
               <button onClick={handleCancelUpdate}>Cancel</button>
             </form>
           )}

@@ -32,8 +32,7 @@ export const todosReducer = ( state: ToDo[] = todosInitialState, action: TodoAct
       return [...state, action.payload];
     }
     case EDIT_TODO : {
-      const newTodos = state.map(todo => todo.id === action.payload.id ? {...todo, description:action.payload.description} : todo);
-      return [newTodos];
+      return state.map(todo => todo.id === action.payload.id ? {...todo, description:action.payload.description} : todo);
     }
     case TOGGLE_TODO : {
       return state.map(todo => todo.id === action.payload.id ? {...todo, isCompleted: action.payload.isCompleted} : todo)
