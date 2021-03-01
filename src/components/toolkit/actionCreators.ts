@@ -1,22 +1,18 @@
+const CREATE_TODO = 'CREATE_TODO';
+const EDIT_TODO = 'EDIT_TODO';
+const TOGGLE_TODO = 'TOGGLE_TODO';
+const DELETE_TODO = 'DELETE_TODO';
+const SELECTED_TODO = 'SELECTED_TODO';
 import { v1 as uuid } from 'uuid'
-import { ToDo } from "../../../type";
+import { ToDo } from '../../type';
+import { todosSlice } from './toolkit';
 
-//Constants
-export const CREATE_TODO = 'CREATE_TODO';
-export const EDIT_TODO = 'EDIT_TODO';
-export const TOGGLE_TODO = 'TOGGLE_TODO';
-export const DELETE_TODO = 'DELETE_TODO';
-export const SELECTED_TODO = 'SELECTED_TODO';
-
-/* Actions & Actions types */
-
-//Create todo
-export interface CreateTodoActionType {
+interface CreateTodoActionType {
   type: typeof CREATE_TODO;
   payload: ToDo
 }
 
-const createTodoActionCreator = ({ description }: {
+const createActionCreator = ({ description }: {
   description: string
 }) : CreateTodoActionType => {
   return { 
@@ -30,7 +26,7 @@ const createTodoActionCreator = ({ description }: {
 }
 
 //Edit todo
-export interface EditTodoActionType {
+interface EditTodoActionType {
   type: typeof EDIT_TODO;
   payload : {
     id: string,
@@ -38,7 +34,7 @@ export interface EditTodoActionType {
   }
 }
 
-const editTodoActionCreator = ({ id, description } : {
+const editActionCreator = ({ id, description } : {
   id: string; description: string
 }) : EditTodoActionType => {
   return {
@@ -48,7 +44,7 @@ const editTodoActionCreator = ({ id, description } : {
 }
 
 //Toggle todo
-export interface ToggleTodoActionType {
+interface ToggleTodoActionType {
   type: typeof TOGGLE_TODO;
   payload: {
     id: string;
@@ -56,7 +52,7 @@ export interface ToggleTodoActionType {
   };
 }
 
-const toggleTodoActionCreator = ({ id, isCompleted } : {
+const toggleActionCreator = ({ id, isCompleted } : {
   id: string ; isCompleted: boolean
 }): ToggleTodoActionType => {
   return {
@@ -66,12 +62,12 @@ const toggleTodoActionCreator = ({ id, isCompleted } : {
 }
 
 //Delete todo
-export interface DeleteTodoActionType {
+interface DeleteTodoActionType {
   type: typeof DELETE_TODO;
   payload: { id: string }
 }
 
-const deleteTodoActionCreator = ({id} : {
+const deleteActionCreator = ({id} : {
   id: string
 }) : DeleteTodoActionType => {
   return {
@@ -81,12 +77,12 @@ const deleteTodoActionCreator = ({id} : {
 }
 
 //Selected todo
-export interface SelectTodoActionType {
+interface SelectTodoActionType {
   type: typeof SELECTED_TODO;
   payload: { id: string }
 }
 
-const selectTodoActionCreator = ({id} : {
+const selectActionCreator = ({id} : {
   id: string
 }) : SelectTodoActionType => {
   return {
@@ -95,4 +91,9 @@ const selectTodoActionCreator = ({id} : {
   }
 }
 
-export {createTodoActionCreator, editTodoActionCreator, toggleTodoActionCreator, deleteTodoActionCreator, selectTodoActionCreator}
+export const {
+  create: createActionCreator,
+  edit: editTodoActionCreator,
+  delete: deleteTodoActionCreator,
+  toggle: toggleTodoActionCreator
+} = todosSlice.actions
